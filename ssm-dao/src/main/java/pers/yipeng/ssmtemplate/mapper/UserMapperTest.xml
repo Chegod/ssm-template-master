@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--使用动态代理开发DAO -->
+<!-- 1. namespace必须和Mapper接口类路径一致 -->
+<!-- 2. id必须和Mapper接口方法名一致 -->
+<!-- 3. parameterType必须和接口方法参数类型一致 -->
+<!-- 4. resultType必须和接口方法返回值类型一致 -->
+<mapper namespace="pers.yipeng.ssmtemplate.mapper.UserMapperTest">
+    <!-- id:statement的id 或者叫做sql的id -->
+    <!-- parameterType:声明输入参数的类型 -->
+    <!-- resultType:声明输出结果的类型，应该填写pojo的全路径 -->
+    <!-- #{}：输入参数的占位符，相当于jdbc的？ -->
+    <select id="selectUserById" parameterType="Integer" resultType="pers.yipeng.ssmtemplate.pojo.UserTest">
+		select * from `user` where id=#{id}
+	</select>
+
+    <!-- 模糊查询 '%${value}%'只能是value，"%"#{valueABC}"%"可以是任意名称-->
+    <select id="fuzzyQueryUser" parameterType="String" resultType="pers.yipeng.ssmtemplate.pojo.UserTest">
+		select * from `user` where username like "%"#{value}"%"
+	</select>
+    <!--查询条件放到QueryVo的user属性中-->
+    <select id="selectUserByQueryVo" parameterType="pers.yipeng.ssmtemplate.pojo.QueryVo"
+            resultType="pers.yipeng.ssmtemplate.pojo.UserTest">
+		select * from `user` where username like "%"#{userTest.username}"%"
+	</select>
+
+    <!-- selectKey 标签实现主键返回 -->
+    <!-- keyColumn:主键对应的表中的哪一列 -->
+    <!-- keyProperty：主键对应的pojo中的哪一个属性 -->
+    <!-- order：设置在执行insert语句前执行查询id的sql，还是在执行insert语句之后执行查询id的sql -->
+    <!-- resultType：设置返回的id的类型,返回值会自动封装 -->
+    <insert id="insertUser" parameterType="pers.yipeng.ssmtemplate.pojo.UserTest">
+        insert into
+        `user`
+        (username,birthday,sex,address)
+        values
+        (#{username},#{birthday},#{sex},#{address})
+        <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+                   resultType="Integer">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <insert id="insertUserIncrUUID" parameterType="pers.yipeng.ssmtemplate.pojo.UserTest">
+        <selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+                   resultType="String">
+            select UUID()
+        </selectKey>
+
+        insert into
+        `user_copy1`
+        (id,username,birthday,sex,address)
+        values
+        (#{id},#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+    <!-- 修改用户 -->
+    <update id="updateUserById" parameterType="pers.yipeng.ssmtemplate.pojo.UserTest">
+		update `user`
+		set
+		username=#{username},sex=#{sex},address=#{address}
+		where
+		id=#{id}
+	</update>
+    <!-- 删除用户 -->
+    <delete id="deleteUserById" parameterType="pers.yipeng.ssmtemplate.pojo.UserTest">
+		delete
+		from
+		`user`
+		where
+		id=#{id}
+	</delete>
+
+
+</mapper>

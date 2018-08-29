@@ -1,0 +1,8 @@
+rootProject.name = 'ssm-template-master'
+include 'ssm-web'
+include 'ssm-common'
+include 'ssm-service'
+include 'ssm-dao'
+include 'ssm-pojo'
+include 'ssm-interface'
+

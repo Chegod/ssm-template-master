@@ -1,0 +1,25 @@
+def libs = rootProject.ext.libraries
+dependencies {
+    compile(
+            //JSP相关
+            libs["servlet-api"],
+            libs["jsp-api"],
+            //Jackson Json处理工具包
+            libs["jackson-databind"],
+            libs["jackson-core"],
+            //时间操作组件
+            libs["joda-time"],
+            //Apache工具组件
+            libs["commons-lang3"],
+            libs["commons-io"],
+            libs["commons-net"],
+            //quartz任务调度框架
+            libs["quartz"],
+            libs["httpclient"],
+            //应用JedisPool资源池管理jedis,需要引入两个包
+            libs["jedis"],
+            libs["commons-pool2"],
+            //fileTree(dir:"${rootProject.projectDir}/libs",include:['fastdfs-client-java-1.27-SNAPSHOT.jar'])
+            fileTree(dir: "${rootProject.projectDir}/libs", include: '*.jar')
+    )
+}
