@@ -21,7 +21,7 @@ Gradle是继Maven之后的新一代构建工具，它采用基于groovy的DSL语
 
 ### dependencies.gradle 文件
 
-在根项目下创建dependencies.gradle，用于同一管理版本号和jar包：
+在根项目下创建dependencies.gradle，用于统一管理版本号和jar包：
 
 ```
 ext {
